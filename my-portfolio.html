@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azam | DevOps Engineer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --primary: #0a192f;
+            --secondary: #172a45;
+            --accent: #64ffda;
+            --text-primary: #ccd6f6;
+            --text-secondary: #8892b0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+        
+        body {
+            background-color: var(--primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Console-like font */
+        @font-face {
+            font-family: 'Fira Code';
+            src: url('https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css');
+        }
+        
+        /* Loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .loader-content {
+            color: var(--accent);
+            font-size: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(100, 255, 218, 0.2);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* DevOps Background Animation */
+        .devops-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .cloud-element {
+            position: absolute;
+            opacity: 0.05;
+            z-index: -1;
+            filter: drop-shadow(0 0 5px var(--accent));
+        }
+        
+        .cloud-element.server {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 15s linear infinite;
+        }
+        
+        .cloud-element.container {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            border-radius: 20%;
+            animation: float 12s linear infinite reverse;
+        }
+        
+        .cloud-element.pipeline {
+            width: 100px;
+            height: 20px;
+            background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+            animation: flow 20s linear infinite;
+        }
+        
+        .cloud-element.cluster {
+            width: 120px;
+            height: 120px;
+            background: 
+                radial-gradient(circle at 30% 30%, var(--accent) 0%, transparent 30%),
+                radial-gradient(circle at 70% 30%, var(--accent) 0%, transparent 30%),
+                radial-gradient(circle at 50% 70%, var(--accent) 0%, transparent 30%);
+            animation: cluster-pulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, -50px) rotate(90deg); }
+            50% { transform: translate(100px, 0) rotate(180deg); }
+            75% { transform: translate(50px, 50px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+        
+        @keyframes flow {
+            0% { transform: translateX(-100px) scaleX(0.5); opacity: 0; }
+            10% { opacity: 0.1; }
+            90% { opacity: 0.1; }
+            100% { transform: translateX(calc(100vw + 100px)) scaleX(1.5); opacity: 0; }
+        }
+        
+        @keyframes cluster-pulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 0.1; }
+            100% { transform: scale(0.8); opacity: 0; }
+        }
+        
+        /* Terminal animation */
+        .terminal {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: rgba(10, 25, 47, 0.8);
+            border-top: 1px solid var(--accent);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 100;
+            overflow: hidden;
+        }
+        
+        .terminal::before {
+            content: '>_';
+            color: var(--accent);
+            margin-right: 10px;
+        }
+        
+        .terminal-text {
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid var(--accent);
+            animation: typing 8s steps(40, end) infinite, blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            0% { width: 0 }
+            25% { width: 100% }
+            50% { width: 100% }
+            75% { width: 0 }
+            100% { width: 0 }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent) }
+        }
+        
+        /* Improved Header */
+        header {
+            background-color: rgba(10, 25, 47, 0.98);
+            position: fixed;
+            width: 100%;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            padding: 10px 50px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .logo {
+            color: var(--accent);
+            font-size: 26px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logo-icon {
+            color: var(--accent);
+            font-size: 22px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+        
+        nav ul li {
+            margin-left: 15px;
+        }
+        
+        nav ul li a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 15px;
+            transition: all 0.3s;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent);
+            background-color: rgba(100, 255, 218, 0.1);
+        }
+        
+        nav ul li a.active {
+            color: var(--accent);
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover::after {
+            width: 60%;
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--accent);
+        }
+        
+        /* Hero Section - Proper Right-Aligned Profile */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+            position: relative;
+        }
+        
+        .hero-container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+        }
+        
+        .profile-pic-container {
+            margin-left: 50px;
+            position: relative;
+        }
+        
+        .profile-pic {
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            border: 5px solid var(--accent);
+            object-fit: cover;
+            box-shadow: 0 0 30px rgba(100, 255, 218, 0.3);
+            animation: profile-pulse 4s infinite;
+        }
+        
+        .profile-placeholder {
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            border: 5px solid var(--accent);
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(100, 255, 218, 0.3);
+            animation: profile-pulse 4s infinite;
+        }
+        
+        .profile-placeholder i {
+            font-size: 100px;
+            color: var(--accent);
+        }
+        
+        @keyframes profile-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(100, 255, 218, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(100, 255, 218, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(100, 255, 218, 0); }
+        }
+        
+        .hero h1 {
+            font-size: clamp(30px, 5vw, 60px);
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+        
+        .hero h2 {
+            font-size: clamp(20px, 3vw, 40px);
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        
+        .hero p {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            background: transparent;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: rgba(100, 255, 218, 0.8);
+        }
+        
+        /* About Section */
+        .section {
+            padding: 100px 50px;
+            position: relative;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            color: var(--text-primary);
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+            bottom: -10px;
+            left: 0;
+        }
+        
+        .about-content {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .skills {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .skill-item {
+            background-color: var(--secondary);
+            padding: 20px;
+            border-radius: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .skill-item h3 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .skill-item ul {
+            list-style: none;
+        }
+        
+        .skill-item ul li {
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+            font-size: 14px;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .skill-item ul li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+        
+        /* Experience Section */
+        .experience-container {
+            display: flex;
+            gap: 50px;
+        }
+        
+        .experience-tabs {
+            flex: 1;
+        }
+        
+        .experience-tab {
+            padding: 15px 20px;
+            border-left: 2px solid var(--secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .experience-tab.active {
+            border-left: 2px solid var(--accent);
+            background-color: var(--secondary);
+        }
+        
+        .experience-tab:hover {
+            background-color: var(--secondary);
+        }
+        
+        .experience-content {
+            flex: 2;
+        }
+        
+        .experience-item {
+            display: none;
+        }
+        
+        .experience-item.active {
+            display: block;
+        }
+        
+        .experience-item h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .experience-item h4 {
+            font-size: 18px;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+        
+        .experience-item p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .experience-item ul {
+            list-style: none;
+        }
+        
+        .experience-item ul li {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .experience-item ul li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+        
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .project-card {
+            background-color: var(--secondary);
+            border-radius: 5px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .project-image {
+            height: 200px;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 40px;
+        }
+        
+        .project-content {
+            padding: 20px;
+        }
+        
+        .project-content h3 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        .project-content p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .project-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .project-links a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s;
+        }
+        
+        .project-links a:hover {
+            color: var(--text-primary);
+        }
+        
+        /* Certifications Section */
+        .certifications-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .certification-card {
+            width: 200px;
+            background-color: var(--secondary);
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .certification-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .certification-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: var(--accent);
+        }
+        
+        .certification-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .certification-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        /* Contact Section */
+        .contact-container {
+            display: flex;
+            gap: 50px;
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-info h3 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .contact-info p {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 20px;
+        }
+        
+        .contact-text h4 {
+            color: var(--text-primary);
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+        
+        .contact-text p {
+            color: var(--text-secondary);
+            margin-bottom: 0;
+            font-size: 14px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 18px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .social-link:hover {
+            background-color: var(--accent);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .contact-form {
+            flex: 1;
+            background-color: var(--secondary);
+            padding: 30px;
+            border-radius: 5px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--text-secondary);
+            border-radius: 5px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        /* Improved Footer */
+        footer {
+            background-color: var(--secondary);
+            padding: 40px 50px 20px;
+            position: relative;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            color: var(--accent);
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .footer-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 15px;
+            position: relative;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent);
+            bottom: -3px;
+            left: 0;
+            transition: width 0.3s;
+        }
+        
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .footer-social a {
+            color: var(--text-primary);
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .footer-social a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .footer-divider {
+            width: 100%;
+            height: 1px;
+            background-color: rgba(136, 146, 176, 0.2);
+            margin: 20px 0;
+        }
+        
+        .footer-bottom {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .back-to-top {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            color: var(--text-primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            header {
+                padding: 15px 30px;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+        
+            nav {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                width: 70%;
+                height: calc(100vh - 70px);
+                background-color: var(--secondary);
+                transition: right 0.3s ease;
+                padding: 30px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul li {
+                margin-left: 0;
+            }
+            
+            .hero-container {
+                flex-direction: column-reverse;
+                text-align: center;
+                padding-top: 100px;
+            }
+            
+            .hero-content {
+                margin-bottom: 50px;
+                max-width: 100%;
+            }
+            
+            .profile-pic-container {
+                margin-left: 0;
+                margin-bottom: 50px;
+            }
+            
+            .about-content, .experience-container, .contact-container {
+                flex-direction: column;
+            }
+            
+            .footer-top {
+                flex-direction: column;
+                gap: 30px;
+                text-align: center;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            
+            .logo {
+                font-size: 22px;
+            }
+            
+            .hero, .section {
+                padding: 100px 20px;
+            }
+            
+            .skills {
+                grid-template-columns: 1fr;
+            }
+            
+            footer {
+                padding: 30px 20px 15px;
+            }
+            
+            .profile-pic, .profile-placeholder {
+                width: 280px;
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div>Loading DevOps Portfolio...</div>
+        </div>
+    </div>
+    
+    <!-- DevOps Background Animation -->
+    <div class="devops-background" id="devopsBackground"></div>
+    
+    <!-- Improved Header -->
+    <header id="header">
+        <div class="logo">
+            <i class="fas fa-terminal logo-icon"></i>
+            <span>Azam<span style="color: var(--accent);">.</span></span>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <nav id="nav">
+            <ul>
+                <li><a href="#about" class="active">About</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#certifications">Certifications</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li>
+                    <a href="#contact" class="btn" style="padding: 8px 20px; margin-left: 10px;">
+                        Hire Me
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Hero Section with Proper Right-Aligned Profile -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h2>Hi, I'm</h2>
+                <h1>Mohd Azam Uddin</h1>
+                <h2>DevOps & Cloud Engineer</h2>
+                <p>Certified DevOps professional with hands-on experience in CI/CD, AWS infrastructure, and containerization. Passionate about building scalable and secure system environments.</p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary">Get In Touch</a>
+                    <a href="#projects" class="btn">View Projects</a>
+                </div>
+            </div>
+            <div class="profile-pic-container">
+                <!-- Using placeholder since profile.jpg doesn't exist -->
+                    <i class="fas fa-user"></i>
+                </div>
+                <img src="profile.jpg" alt="Mohd Azam Uddin" class="profile-pic">
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="section">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>Hello! I'm Azam, a DevOps and Cloud Engineer trainee with a passion for automating infrastructure and streamlining development workflows. I specialize in creating efficient CI/CD pipelines and deploying scalable applications on cloud platforms.</p>
+                <p>My journey in technology began with a curiosity about how systems work, which led me to pursue certifications in DevOps and cloud computing. I'm currently enhancing my skills while pursuing my Bachelor's degree in Computer Applications.</p>
+                <p>Here are a few technologies I've been working with recently:</p>
+            </div>
+            <div class="skills">
+                <div class="skill-item">
+                    <h3>DevOps</h3>
+                    <ul>
+                        <li>CI/CD (Jenkins)</li>
+                        <li>Docker & Kubernetes</li>
+                        <li>Git & GitHub</li>
+                        <li>Terraform (IaC)</li>
+                    </ul>
+                </div>
+                <div class="skill-item">
+                    <h3>Cloud & Databases</h3>
+                    <ul>
+                        <li>AWS (EC2, S3, IAM)</li>
+                        <li>MongoDB</li>
+                        <li>PostgreSQL</li>
+                        <li>Linux & Shell Scripting</li>
+                    </ul>
+                </div>
+                <div class="skill-item">
+                    <h3>Programming</h3>
+                    <ul>
+                        <li>Python</li>
+                        <li>JavaScript</li>
+                        <li>Node.js</li>
+                        <li>Bash Scripting</li>
+                    </ul>
+                </div>
+                <div class="skill-item">
+                    <h3>Methodologies</h3>
+                    <ul>
+                        <li>Agile & Scrum</li>
+                        <li>Infrastructure as Code</li>
+                        <li>Monitoring & Logging</li>
+                        <li>Automation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Experience Section -->
+    <section id="experience" class="section">
+        <h2 class="section-title">Experience & Education</h2>
+        <div class="experience-container">
+            <div class="experience-tabs">
+                <div class="experience-tab active" data-tab="internship">Internship</div>
+                <div class="experience-tab" data-tab="education">Education</div>
+                <div class="experience-tab" data-tab="skills">Soft Skills</div>
+            </div>
+            <div class="experience-content">
+                <div class="experience-item active" id="internship">
+                    <h3>DevOps Trainee</h3>
+                    <h4>PMKYY, SynchroServe India | March 2025 – July 2025</h4>
+                    <ul>
+                        <li>Configured Jenkins pipelines and performed Git version control operations</li>
+                        <li>Provisioned AWS EC2 servers and deployed web applications</li>
+                        <li>Wrote Terraform files to provision infrastructure</li>
+                        <li>Assisted in Docker containerization and Kubernetes basics on Minikube</li>
+                    </ul>
+                </div>
+                <div class="experience-item" id="education">
+                    <h3>Bachelor of Commerce in Computer Applications</h3>
+                    <h4>Pragati Degree College, Telangana University Dichpally Nizamabad 503001 Telangana | 2025</h4>
+                    
+                    <h3 style="margin-top: 30px;">Intermediate – BiPC</h3>
+                    <h4>AHMV Jr College Nizamabad 503001, TS BIE Telangana | 2020</h4>
+                    
+                    <h3 style="margin-top: 30px;">SSC Class (X)</h3>
+                    <h4>Golden Jubilee High School TS BSE Nizamabad 503001 Telangana | 2018</h4>
+                </div>
+                <div class="experience-item" id="skills">
+                    <h3>Soft Skills</h3>
+                    <ul>
+                        <li>Ability to handle feedback positively</li>
+                        <li>Team collaboration and communication</li>
+                        <li>Quick learner and adaptive</li>
+                        <li>Time management and organization</li>
+                        <li>Proactive and self-motivated</li>
+                        <li>Critical thinking under pressure</li>
+                        <li>Conflict resolution</li>
+                        <li>Effective documentation and reporting</li>
+                        <li>Continuous learning mindset</li>
+                    </ul>
+                    
+                    <h3 style="margin-top: 30px;">Languages</h3>
+                    <ul>
+                        <li>English</li>
+                        <li>Hindi</li>
+                        <li>Telugu</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <h2 class="section-title">Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-image" style="background-color: #ff6b6b;">
+                    <i class="fab fa-aws"></i>
+                </div>
+                <div class="project-content">
+                    <h3>AWS-Jenkins-Pipeline</h3>
+                    <p>Built an automated CI/CD pipeline with Jenkins to deploy a Flask application on AWS EC2. Integrated GitHub for version control and used shell scripts for deployment automation.</p>
+                    <div class="project-links">
+                        <a href="https://github.com/AzamCloudOps/aws-Jenkins-pipeline"><i class="fab fa-github"></i> code</a>
+                        <a href="https://aws-jenkins-demo.azamdevops.com"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-image" style="background-color: #48dbfb;">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="project-content">
+                    <h3>Terraform-Flask-Express-AWS</h3>
+                    <p>Provisioned AWS infrastructure using Terraform. Deployed a multi-tier Flask backend and Express frontend application. Automated deployment and rollback using shell scripts.</p>
+                    <div class="project-links">
+                        <a href="https://github.com/AzamCloudOps/terraform-flask-express-aws"><i class="fab fa-github"></i> Code</a>
+                        <a href="https://terraform-demo.azamdevops.com"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-image" style="background-color: #1dd1a1;">
+                    <i class="fab fa-docker"></i>
+                </div>
+                <div class="project-content">
+                    <h3>Minikube-Feedback-App</h3>
+                    <p>Containerized a feedback app using Docker and deployed on Minikube with Kubernetes manifests. Configured Services, Deployments, and Ingress.</p>
+                    <div class="project-links">
+                        <a href="https://github.com/AzamCloudOps/minikube-feedback-app"><i class="fab fa-github"></i> Code</a>
+                        <a href="https://minikube-demo.azamdevops.com"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-image" style="background-color: #f368e0;">
+                    <i class="fab fa-node-js"></i>
+                </div>
+                <div class="project-content">
+                    <h3>Node-Flask-Feedback-App</h3>
+                    <p>Developed a full-stack feedback platform integrating Node.js frontend and Flask API backend. Implemented Git-based branching and CI integration.</p>
+                    <div class="project-links">
+                        <a href="https://github.com/AzamCloudOps/node-flask-feedback-app"><i class="fab fa-github"></i> Code</a>
+                        <a href="https://feedback-demo.azamdevops.com"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-image" style="background-color: #ff9f43;">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="project-content">
+                    <h3>Flask-App-Using-MongoDB</h3>
+                    <p>Created a Flask application using MongoDB as the backend. Performed CRUD operations with RESTful API structure and responsive frontend.</p>
+                    <div class="project-links">
+                        <a href="https://github.com/AzamCloudOps/Flask-App-Using-MongoDB"><i class="fab fa-github"></i> Code</a>
+                        <a href="https://flask-mongo-demo.azamdevops.com"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Certifications Section -->
+    <section id="certifications" class="section">
+        <h2 class="section-title">Certifications</h2>
+        <div class="certifications-container">
+            <div class="certification-card">
+                <div class="certification-logo">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h3>DevOps Certification</h3>
+                <p>Tutedude | Certificate ID: TD-MOHD-DO-0421</p>
+            </div>
+            <div class="certification-card">
+                <div class="certification-logo">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>AI-DevOps</h3>
+                <p>PMKVY Syncroserve</p>
+            </div>
+            <div class="certification-card">
+                <div class="certification-logo">
+                    <i class="fab fa-python"></i>
+                </div>
+                <h3>Python Bootcamp</h3>
+                <p>Udemy</p>
+            </div>
+            <div class="certification-card">
+                <div class="certification-logo">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3>Data Analytics with Excel</h3>
+                <p>Newton School</p>
+            </div>
+            <div class="certification-card">
+                <div class="certification-logo">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <h3>Agile Project Management</h3>
+                <p>HP LIFE</p>
+            </div>
+            <div class="certification-card">
+                <div class="certification-logo">
+                    <i class="fas fa-store"></i>
+                </div>
+                <h3>Affiliate Marketing</h3>
+                <p>Great Learning</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+                <p>I'm currently looking for new opportunities in DevOps and Cloud Engineering. Whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Phone</h4>
+                            <p>+91 6300925624</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Email</h4>
+                            <p>mohdazamuddin999@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Location</h4>
+                            <p>Nizamabad, 503001, Telangana</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/mohdazamuddin999/" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://github.com/AzamCloudOps" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="https://twitter.com/AzamDevOps" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="https://instagram.com/AzamDevOps" class="social-link"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" class="form-control" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Improved Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <i class="fas fa-terminal"></i>
+                    <span>Azam<span style="color: var(--accent);">.</span></span>
+                </div>
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#experience">Experience</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#certifications">Certifications</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-social">
+                    <a href="https://www.linkedin.com/in/mohdazamuddin999/"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://github.com/AzamCloudOps"><i class="fab fa-github"></i></a>
+                    <a href="https://twitter.com/AzamDevOps"><i class="fab fa-twitter"></i></a>
+                    <a href="https://instagram.com/AzamDevOps"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>© 2025 Mohd Azam Uddin. All rights reserved.</p>
+                </div>
+                <a href="#" class="back-to-top" id="backToTop">
+                    <i class="fas fa-arrow-up"></i>
+                    Back to Top
+                </a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Terminal Animation -->
+    <div class="terminal">
+        <div class="terminal-text" id="terminal-text"></div>
+    </div>
+    
+    <script>
+        // Loader
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('loader');
+            setTimeout(function() {
+                loader.style.opacity = '0';
+                setTimeout(function() {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 1000);
+        });
+        
+        // Terminal text animation
+        const terminalTexts = [
+            "Welcome to Azam's DevOps Portfolio...",
+            "Building CI/CD pipelines...",
+            "Containerizing applications with Docker...",
+            "Orchestrating with Kubernetes...",
+            "Provisioning infrastructure with Terraform...",
+            "Automating deployments with Jenkins..."
+        ];
+        
+        let currentTextIndex = 0;
+        const terminalElement = document.getElementById('terminal-text');
+        
+        function updateTerminalText() {
+            terminalElement.textContent = terminalTexts[currentTextIndex];
+            currentTextIndex = (currentTextIndex + 1) % terminalTexts.length;
+            setTimeout(updateTerminalText, 3000);
+        }
+        
+        // Initial update
+        updateTerminalText();
+        
+        // Create DevOps background elements
+        const devopsBackground = document.getElementById('devopsBackground');
+        const cloudElements = ['server', 'container', 'pipeline', 'cluster'];
+        
+        for (let i = 0; i < 20; i++) {
+            const element = document.createElement('div');
+            const type = cloudElements[Math.floor(Math.random() * cloudElements.length)];
+            element.className = `cloud-element ${type}`;
+            
+            // Random position
+            const left = Math.random() * 100;
+            const top = Math.random() * 100;
+            element.style.left = `${left}%`;
+            element.style.top = `${top}%`;
+            
+            // Random animation duration
+            const duration = 10 + Math.random() * 20;
+            element.style.animationDuration = `${duration}s`;
+            
+            // Random delay
+            const delay = Math.random() * 10;
+            element.style.animationDelay = `-${delay}s`;
+            
+            devopsBackground.appendChild(element);
+        }
+        
+        // Experience tabs functionality
+        const tabs = document.querySelectorAll('.experience-tab');
+        const items = document.querySelectorAll('.experience-item');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and items
+                tabs.forEach(t => t.classList.remove('active'));
+                items.forEach(i => i.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding item
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if(this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (window.innerWidth <= 992) {
+                        nav.classList.remove('active');
+                        hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                }
+            });
+        });
+        
+        // Form submission
+        const form = document.getElementById('contactForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!form.checkValidity()) {
+                alert('Please fill all required fields');
+                return;
+            }
+            alert('Thank you for your message! I will get back to you soon.');
+            form.reset();
+        });
+        
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+        
+        hamburger.addEventListener('click', function() {
+            nav.classList.toggle('active');
+            hamburger.innerHTML = nav.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!nav.contains(e.target) && e.target !== hamburger) {
+                nav.classList.remove('active');
+                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+        
+        // Active link highlighting
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a');
+        
+        window.addEventListener('scroll', function() {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        
+        backToTop.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Show/hide back to top button
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+    </script>
+</body>
+</html>
